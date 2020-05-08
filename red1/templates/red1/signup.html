@@ -1,0 +1,13 @@
+{% extends 'red1/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form action="{% url 'red1:signup' %}" method="post">
+    {% csrf_token %}
+    <div>
+      {{ form|crispy }}
+    </div>
+    <button type="submit">Sign up</button>
+    <p>Already have an account? <a href="{% url 'red1:login' %}">Log in!</a></p>
+  </form>
+{% endblock content %}

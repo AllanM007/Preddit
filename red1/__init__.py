@@ -1,0 +1,1 @@
+default_app_config = 'red1.apps.Red1Config'
