@@ -1,21 +1,179 @@
-{% extends 'red1/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preddit</title>
+    <!-- For Ajax Search suggestion -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'red1/main.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- For Ajax Search suggestion -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="{% static 'red1/reddit.js' %}"></script>
+    
+  <link href="{% static 'red1/feed.css' %}" rel="stylesheet">
+  <script src="{% static 'red1/jquery.bullseye-1.0-min.js' %}"></script>
+  <script src="{% static 'red1/main.js' %}"></script>
 
-{% block content %}
-  <a href="{% url 'red1:logout' %}">Log out</a>
-  <br>
-  <ul>
-    {% for user in users %}
-      <!-- NOTE: We escape HTML to prevent XSS attacks. -->
-      <li data-username="{{ user.username|escape }}">
-        {{ user.username|escape }}: {{ user.status|default:'Offline' }}
-      </li>
-    {% endfor %}
-  </ul>
-{% endblock content %}
+  </head>
+  <body style="padding-top: 0">
+  	<header>
+        <nav class="navbar navbar-default" role="navigation" style="">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">Preddit</a>
+          </div>
+          <div class="collapse navbar-collapse" id="menu">
+          	<ul class="nav navbar-nav">
+          		<li>
+          			<a href="#" id="notifications" data-container="body" data-toggle="popover" data-placement="bottom" title="Notifications">
+          				<span class="glyphicon glyphicon-fire"></span>
+          			</a>
+          		</li>
+          		<li><a href="#">Feed</a></li>
+                <li><a href="#">Subpreddits</a></li>
+                <li><a href="#">Inbox  <!--span class="badge" id="unread-count">0</span--></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            	<form class="navbar-form navbar-left" role="search" action="/search/">
+            		<div class="input-group" style="width:210px">
+            			<input type="text" class="form-control" id="auto-search" name="q" placeholder="Search">
+            			<span class="input-group-btn">
+            				<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            			</span>
+            		</div>
+            	</form>
 
-{% block script %}
-  <script>
-    var socket = new WebSocket('ws://' + window.location.host + '/users/');
+            	<!--JQuery code for Ajax autocomplete search suggestion -->
+                <script type="text/javascript">
+                  $(function() {
+                      $("#auto-search").autocomplete({
+                          source: "/autocomplete/",
+                          minLength: 2
+                      });
+                  });
+                </script>
+            <!-- End JQuery code for Ajax autocomplete search suggestion -->
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">newuser1 <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="#">Account Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Log out</a></li>
+                  </ul>
+                </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+</header>
+<main>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="page-header">
+					<button type="button" class="btn btn-primary pull-right btn-compose" title="Press Ctrl + P to compose">
+						<span class="glyphicon glyphicon-share-alt"></span> Compose
+					</button>
+					<h1>Feed</h1>
+				</div>
+				<div class="panel panel-default panel-feed">
+					<div class="panel-heading">
+						<h3 class="panel-title">Latest posts</h3>
+					</div>
+					<div class="panel-body">
+						<div class="compose">
+							<h2>Compose a new post</h2>
+							<form role="form" id="compose-form">
+								<input type='hidden'>
+								<input type="hidden" name="last_feed">
+								<div class="form-group">
+									<textarea class="form-control" rows="3" name="post"></textarea>
+								</div>
+								<div class="form-group">
+									<button type="button" class="btn btn-primary btn-post">
+										<span class="glyphicon glyphicon-send"></span> Post
+									</button>
+									<button type="button" class="btn btn-default btn-cancel-compose">Cancel</button>
+									<span class="help-block help-count pull-right">255</span>
+								</div>
+							</form>
+						</div>
+						<div class="stream-update">
+							<a href="#"><span class="new-posts"></span> New Posts</a>
+						</div>
+						<ul class="stream">
+							<li feed-id="14877">
+								<div class="feed-container">
+									<a href="#"><img src="" class="user"></a>
+									<div class="post">
+										<h3><a href="#">User</a> <small>time</small></h3>
+										<p>User has joined the network.</p>
+										<div class="interaction">
+											<a href="#" style="text-decoration: none;" class="like">
+												<span class="glyphicon glyphicon-thumbs-up"></span>
+												<span class="text">Like</span>
+												(<span class="like-count">0</span>)
+											</a>
+											<a href="#" style="text-decoration: none;" class="comment">
+												<span class="glyphicon glyphicon-comment"></span> Comment
+												(<span class="comment-count">0</span>)
+											</a>
+										</div>
+										<div class="comments">
+											<form role="form" method="post" action="" onsubmit="return false">
+												<input type='hidden'>
+												<input type="hidden" name="feed" value="14877">
+												<input type="text" class="form-control input-sm" placeholder="Write a comment..." name="post" maxlength="255">
+											</form>
+											<ol class="clearfix">
+												
+											</ol>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="load">
+							<!--img src="/static/img/loading.gif"-->
+							<img src="{% static 'red1/806.gif' %}">
+						</div>
+						<form method="get" action="#" id="load_feed" autocomplete="off">
+							<input type="hidden" name="feed_source" id="feed_source" value="all">
+							<input type="hidden" name="from_feed" value="14874">
+							<input type="hidden" name="page" value="1">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+<br>
+<ul>
+	{% for user in users %}
+	<NOTE: We escape HTML to prevent XSS attacks.>
+	<li data-username="{{ user.username|escape }}">
+		{{ user.username|escape }}: {{ user.status|default:'Offline' }}
+	</li>
+	{% endfor %}
+</ul>
+<a role="button" class="btn btn-danger" href="{% url 'red1:logout' %}">Log out</a>
+<script>
+
+	var socket = new WebSocket('ws://' + window.location.host + '/users/');
 
     socket.onopen = function open() {
       console.log('WebSockets connection created.');
@@ -40,5 +198,8 @@
     if (socket.readyState == WebSocket.OPEN) {
       socket.onopen();
     }
-  </script>
-{% endblock script %}
+</script>
+<script src="{% static 'red1/notification.js' %}"></script>
+<script src="{% static 'red1/check_messages.js' %}"></script>
+</body>
+</html>
