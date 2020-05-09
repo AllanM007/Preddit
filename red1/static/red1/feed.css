@@ -161,6 +161,14 @@ ul.stream li div.post div.interaction a {
   padding: 0;
 }
 
+.panel-user {
+  margin-top: 50px;
+}
+
+.panel-user .panel-body {
+  padding: 10px;
+}
+
 .feed-container {
   padding-left: 15px;
   padding-right: 15px;

@@ -103,7 +103,7 @@ $(function () {
         data: { 'feed': feed },
         cache: false,
         beforeSend: function () {
-          $("ol", post).html("<li class='loadcomment'><img src='/static/img/loading.gif'></li>");
+          $("ol", post).html("<li class='loadcomment'><img src='static/img/loading.gif'></li>");
         },
         success: function (data) {
           $("ol", post).html(data);
