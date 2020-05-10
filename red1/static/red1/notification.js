@@ -8,7 +8,8 @@ $(function () {
     else {
       $("#notifications").popover('show');
       $.ajax({
-        url: '/notifications/last/',
+        //url: '/notifications/last/',
+        url: '/users/',
         beforeSend: function () {
           $(".popover-content").html("<div style='text-align:center'><img src='static/img/loading.gif'></div>");
           $("#notifications").removeClass("new-notifications");
@@ -23,7 +24,8 @@ $(function () {
 
   function check_notifications() {
     $.ajax({
-      url: '/notifications/check/',
+      //url: '/notifications/check/',
+      url: '/users/',
       cache: false,
       success: function (data) {
         if (data != "0") {
