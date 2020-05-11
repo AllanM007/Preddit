@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
+from django.core import serializers
 from .forms import PostForm, CommentForm
 from django.http import JsonResponse
 from .models import Post, Comment, Subweddit
@@ -38,7 +39,6 @@ def sign_up(request):
             print(form.errors)
     return render(request, 'red1/signup.html', {'form': form})
 
-
 @login_required(login_url='/login/')
 def user_list(request):
     
@@ -48,40 +48,32 @@ def user_list(request):
         user.status = 'Online' if hasattr(user, 'logged_in_user') else 'Offline'
 
     posts = Post.objects.all().order_by('-created_on')
-    response_data = {}
-
-    if request.POST.get('action') == 'post':
-        body = request.POST.get('body')
-        author = request.user.username
-
-        response_data['body'] = body
-        response_data['author'] = author
-
-        Post.objects.create(
-            body = body,
-            author = author,
-            )
-        return JsonResponse(response_data)
+    
+    form =  PostForm
 
     context = {
-        'posts':posts,
         'users':users,
+        'form':form,
+        'posts':posts,
     }
 
     return render(request, 'red1/user_list.html', context)
 
-def create_post(request):
-    posts = Post.objects.all()
-    response_data = {}
 
-    if request.POST.get('action') == 'post':
-        body = request.POST.get('body')
+def user_post(request):
+    
+    if request.is_ajax and request.method == 'POST':
+        
+        form = PostForm(request.POST)
+        
+        if form.is_valid:
 
-        response_data['body'] = body
-      
-        Post.objects.create(
-            body = body,
-            )
-        return JsonResponse(response_data)
+            instance = form.save()
 
-    return render(request, 'red1/test.html', {'posts':posts})
+            ser_instance = serializers.serialize('json', [ instance, ])
+
+            return JsonResponse({"instance": ser_instance}, status=200)
+        else:
+            return JsonResponse({"error": form.errors}, status=400)
+
+    return JsonResponse({"error": ""}, status=400)

@@ -17,7 +17,7 @@ class Subweddit(models.Model):
 
 class Post(models.Model):
 	author = models.ForeignKey(LoggedInUser, on_delete=models.CASCADE, null=True)
-	body = models.TextField()
+	body = models.TextField(null=True)
 	created_on = models.DateTimeField(auto_now_add=True)
 	last_modified = models.DateTimeField(auto_now=True)
 	weddits = models.ManyToManyField('Subweddit', related_name='weddits')

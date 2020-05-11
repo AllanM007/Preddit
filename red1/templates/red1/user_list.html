@@ -66,7 +66,7 @@
                 </script>
             <!-- End JQuery code for Ajax autocomplete search suggestion -->
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">newuser1 <b class="caret"></b></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ request.user.username }}<b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li><a href="#">My Profile</a></li>
                     <li><a href="#">Account Settings</a></li>
@@ -109,45 +109,49 @@
 					<div class="panel-body">
 						<div class="compose">
 							<h2>Compose a new post</h2>
-							<form method="POST" id="compose-form">
+							<form method="POST" id="post-form">
 								{% csrf_token %}
-								<div class="dropdown">
-									<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Subweddits
-										<span class="caret"></span></button>
-										<ul class="dropdown-menu">
-											<li><a href="#">w/tech</a></li>
-											<li><a href="#">w/memes</a></li>
-											<li><a href="#">w/cars</a></li>
-											<li><a href="">w/movies</a></li>
-										</ul>
-									</div>
-									<br>
+								<!--div class="dropdown">
+									<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Subweddits<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li><a href="#">w/tech</a></li>
+										<li><a href="#">w/memes</a></li>
+										<li><a href="#">w/cars</a></li>
+										<li><a href="">w/movies</a></li>
+									</ul>
+								</div>
+								<br>
 								<input type='hidden'>
 								<input type="hidden" name="last_feed">
 								<div class="form-group">
 									<textarea class="form-control" rows="3" id="body"></textarea>
+								</div-->
+								{% for field in form %}
+								<div class="form-group col-4">
+									<label class="col-12">{{ field.label }}</label>
+									{{ field }}
 								</div>
-								<div class="form-group">
-									<button type="submit" class="btn btn-primary">
-										<span class="glyphicon glyphicon-send"></span> Post
-									</button>
-									<!--button type="button" class="btn btn-default btn-cancel-compose">Cancel</button>
-									<span class="help-block help-count pull-right">240 characters</span-->
-								</div>
+								{% endfor %}
+								<button type="submit" class="btn btn-primary">
+									<span class="glyphicon glyphicon-send"></span> Post
+								</button>
+								<button type="button" class="btn btn-default btn-cancel-compose">Cancel</button>
+								<span class="help-block help-count pull-right">240 characters</span-->
 							</form>
 						</div>
 						<div class="stream-update">
 							<a href="#"><span class="new-posts"></span> New Posts</a>
 						</div>
-						<ul class="stream">
+						<ul class="stream" id="my_posts">
 							{% for post in posts %}
 							<li feed-id="14877">
 								<div class="feed-container">
 									<a href="#"><img src="" class="user"></a>
 									<div class="post">
-										<h4><a href="#">{% for weddits in post.weddits.all %}{{ weddits }}{% endfor %}</a></h4>
-										<h3><a href="#">{{ post.author }}</a> <small>{{ post.created_on }}</small></h3>
-										<p>{{post.body}}</p>
+										<h4 class="weddits"><a href="#">{% for weddits in post.weddits.all %}{{ weddits }}{% endfor %}</a></h4>
+										<h3 class="author"><a href="#">{{ post.author }}</a> <small>{{ post.created_on | date:"Y-m-d" }}</small></h3>
+										<p class="body1">{{post.body}}</p>
 										<div class="interaction">
 											<a href="#" style="text-decoration: none;" class="like">
 												<span class="glyphicon glyphicon-arrow-up"></span>
@@ -199,6 +203,7 @@
 							{{ user.username|escape }}: {{ user.status|default:'Offline' }}
 						</li>
 						{% endfor %}
+						<br>
 						<a role="button" class="btn btn-danger" href="{% url 'red1:logout' %}">Log out</a>
 					</div>
 				</div>
@@ -209,32 +214,69 @@
 <br>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
-	$(document).on('submit', '#compose-form',function(e){
-    $.ajax({
-        type:'POST',
-        url:'{% url "red1:user_list" %}',
-        data:{
-            title:$('#body').val(),
-            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-            action: 'post'
-        },
-        success:function(json){
-            document.getElementById("post-form").reset();
-            $(".posts").prepend('<div class="col-md-6">'+
-                '<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">' +
-                    '<div class="col p-4 d-flex flex-column position-static">' +
-                        //'<h3 class="mb-0">' + json.title + '</h3>' +
-                        '<p class="mb-auto">' + json.body + '</p>' +
-                    '</div>' +
-                '</div>' +
-            '</div>' 
-            )
-        },
-        error : function(xhr,errmsg,err) {
-        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-    }
-    });
-});
+	$("#post-form").submit(function (e) {
+        // preventing from page reload and default actions
+        e.preventDefault();
+        // serialize the data for sending the form data.
+        var serializedData = $(this).serialize();
+        // make POST ajax call
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'red1:post' %}",
+            data: serializedData,
+            success: function (response) {
+                // on successfull creating object
+                // 1. clear the form.
+                $("#post-form").trigger('reset');
+                // 2. focus to nickname input 
+                $("#id_body").focus();
+
+                // display the newly friend to table.
+                var instance = JSON.parse(response["instance"]);
+                var fields = instance[0]["fields"];
+                $("#my_posts").prepend(
+                    `<li feed-id="14877">
+								<div class="feed-container">
+									<a href="#"><img src="" class="user"></a>
+									<div class="post">
+										<h4 class="weddits"><a href="#">{% for weddits in post.weddits.all %}${fields["weddits"]||""}{% endfor %}</a></h4>
+										<h3 class="author"><a href="#">${fields["author"]||""}</a> <small>${fields["created_on"]||""}</small></h3>
+										<p class="body1">${fields["body"]||""}</p>
+										<div class="interaction">
+											<a href="#" style="text-decoration: none;" class="like">
+												<span class="glyphicon glyphicon-arrow-up"></span>
+												<span class="text">Upvote</span>
+												(<span class="like-count">0</span>)
+											</a>
+											<a href="#" style="text-decoration: none;" class="comment">
+												<span class="glyphicon glyphicon-comment"></span> Comment
+												(<span class="comment-count">0</span>)
+											</a>
+											<a href="#" style="text-decoration: none;" class="bookmark">
+												<span class="glyphicon glyphicon-bookmark"></span>
+											</a>
+										</div>
+										<div class="comments">
+											<form role="form" method="post" action="" onsubmit="return false">
+												<input type='hidden'>
+												<input type="hidden" name="feed" value="14877">
+												<input type="text" class="form-control input-sm" placeholder="Write a comment..." name="post" maxlength="255">
+											</form>
+											<ol class="clearfix">
+												
+											</ol>
+										</div>
+									</div>
+								</div>
+							</li>`
+                )
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    })
 </script>
 <script>
 
