@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -111,33 +112,19 @@
 							<h2>Compose a new post</h2>
 							<form method="POST" id="post-form">
 								{% csrf_token %}
-								<!--div class="dropdown">
-									<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Subweddits<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu">
-										<li><a href="#">w/tech</a></li>
-										<li><a href="#">w/memes</a></li>
-										<li><a href="#">w/cars</a></li>
-										<li><a href="">w/movies</a></li>
-									</ul>
+								<div class="form-group col-sm-4">
+									{{ form.weddits|as_crispy_field }}
 								</div>
-								<br>
-								<input type='hidden'>
-								<input type="hidden" name="last_feed">
-								<div class="form-group">
-									<textarea class="form-control" rows="3" id="body"></textarea>
-								</div-->
-								{% for field in form %}
 								<div class="form-group col-4">
-									<label class="col-12">{{ field.label }}</label>
-									{{ field }}
+									<textarea class="form-control" rows="3">{{ form.body }}</textarea>
 								</div>
-								{% endfor %}
+								<div class="form-group col-4">
+									{{ form.author }}
+								</div>
 								<button type="submit" class="btn btn-primary">
 									<span class="glyphicon glyphicon-send"></span> Post
 								</button>
 								<button type="button" class="btn btn-default btn-cancel-compose">Cancel</button>
-								<span class="help-block help-count pull-right">240 characters</span-->
 							</form>
 						</div>
 						<div class="stream-update">
