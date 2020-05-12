@@ -66,7 +66,7 @@ def user_post(request):
         
         form = PostForm(request.POST)
         
-        if form.is_valid:
+        if form.is_valid():
 
             instance = form.save()
 

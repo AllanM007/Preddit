@@ -10,7 +10,7 @@ SUB_WEDDITS=(
     )
 
 class PostForm(forms.ModelForm):
-    weddits = forms.ChoiceField(choices=SUB_WEDDITS)
+    weddits = forms.ChoiceField(choices=SUB_WEDDITS, widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Post

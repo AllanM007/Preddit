@@ -112,19 +112,26 @@
 							<h2>Compose a new post</h2>
 							<form method="POST" id="post-form">
 								{% csrf_token %}
-								<div class="form-group col-sm-4">
-									{{ form.weddits|as_crispy_field }}
-								</div>
+								{% for field in form %}
 								<div class="form-group col-4">
-									<textarea class="form-control" rows="3">{{ form.body }}</textarea>
+									{{ field|as_crispy_field }}
 								</div>
+								{% endfor %}
+								<!--{% for field in form %}
 								<div class="form-group col-4">
-									{{ form.author }}
+									<textarea class="form-control" rows="3" >{{ field.form.body }}</textarea>
 								</div>
+								{% endfor %}
+								{% for field in form %}
+								<div class="form-group col-4">
+									{{ field.form.author }}
+								</div>
+								{% endfor %}-->
 								<button type="submit" class="btn btn-primary">
 									<span class="glyphicon glyphicon-send"></span> Post
 								</button>
 								<button type="button" class="btn btn-default btn-cancel-compose">Cancel</button>
+								<span class="help-block help-count pull-right">240 characters</span-->
 							</form>
 						</div>
 						<div class="stream-update">
@@ -260,7 +267,8 @@
             },
             error: function (response) {
                 // alert the error if any error occured
-                alert(response["responseJSON"]["error"]);
+                //alert(response["responseJSON"]["error"]);
+                console.log(response["responseJSON"]["error"]);
             }
         })
     })
