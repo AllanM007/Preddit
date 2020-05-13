@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Select, Textarea
 from django import forms
 from .models import LoggedInUser, Subweddit, Post, Comment
 
@@ -10,11 +10,18 @@ SUB_WEDDITS=(
     )
 
 class PostForm(forms.ModelForm):
-    weddits = forms.ChoiceField(choices=SUB_WEDDITS, widget=forms.Select(attrs={'class': 'form-control'}))
+    weddits = forms.ModelMultipleChoiceField(queryset=Subweddit.objects.all())
 
     class Meta:
         model = Post
-        fields = ['body', 'author']
+        fields = ['author', 'weddits', 'body']
+        widgets = {
+            'body': Textarea(attrs={'cols': 8, 'rows': 4}),
+            'weddits': Select(attrs={'class': 'form-control'})
+        }
+
+    field_order = ['weddits', 'body', 'author']
+
 
 class CommentForm(forms.ModelForm):
 

@@ -112,21 +112,20 @@
 							<h2>Compose a new post</h2>
 							<form method="POST" id="post-form">
 								{% csrf_token %}
-								{% for field in form %}
+								
+								<!--div class="form-group col-4">
+									{{ form|crispy }}
+								</div-->
 								<div class="form-group col-4">
-									{{ field|as_crispy_field }}
+									{{ form.weddits|as_crispy_field }}
 								</div>
-								{% endfor %}
-								<!--{% for field in form %}
 								<div class="form-group col-4">
-									<textarea class="form-control" rows="3" >{{ field.form.body }}</textarea>
+									{{ form.body|as_crispy_field }}
 								</div>
-								{% endfor %}
-								{% for field in form %}
 								<div class="form-group col-4">
-									{{ field.form.author }}
+									{{ form.author|as_crispy_field }}
 								</div>
-								{% endfor %}-->
+								
 								<button type="submit" class="btn btn-primary">
 									<span class="glyphicon glyphicon-send"></span> Post
 								</button>

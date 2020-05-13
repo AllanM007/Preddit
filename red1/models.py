@@ -2,18 +2,28 @@ from django.conf import settings
 from django.db import models
 
 
+WEDDIT_CHOICES = (
+        ('w/tech', 'w/tech'),
+        ('w/cars', 'w/cars'),
+        ('w/memes', 'w/memes'),
+        ('w/movies', 'w/movies'),
+    )
+
 class LoggedInUser(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name='logged_in_user')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='logged_in_user')
 
     def __str__(self):
     	return f'User : {self.user.username}'
 
 class Subweddit(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField( max_length=20, choices=WEDDIT_CHOICES)
 
     def __str__(self):
     	return self.name
+
+    def __iter__(self):
+    	return [field.value_to_string(self) for field in Subweddit._meta.fields]
 
 class Post(models.Model):
 	author = models.ForeignKey(LoggedInUser, on_delete=models.CASCADE, null=True)

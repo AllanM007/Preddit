@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.core import serializers
 from .forms import PostForm, CommentForm
 from django.http import JsonResponse
-from .models import Post, Comment, Subweddit
+from .models import Post, Comment, Subweddit, LoggedInUser
 
 User = get_user_model()
 
@@ -68,9 +68,17 @@ def user_post(request):
         
         if form.is_valid():
 
-            instance = form.save()
+            instance = form.save(commit=False)
+
+            instance.author = LoggedInUser.objects.get(user=request.user)
+
+            instance.save()
+
+            form.save_m2m()
 
             ser_instance = serializers.serialize('json', [ instance, ])
+
+            print(ser_instance)
 
             return JsonResponse({"instance": ser_instance}, status=200)
         else:
