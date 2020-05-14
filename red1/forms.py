@@ -11,6 +11,8 @@ SUB_WEDDITS=(
 
 class PostForm(forms.ModelForm):
     weddits = forms.ModelMultipleChoiceField(queryset=Subweddit.objects.all())
+    #weddits = forms.ChoiceField(choices=SUB_WEDDITS)
+
 
     class Meta:
         model = Post
