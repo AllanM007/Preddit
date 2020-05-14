@@ -23,8 +23,11 @@ class Subweddit(models.Model):
     	return self.name
 
     def __iter__(self):
-    	return [field.value_to_string(self) for field in Subweddit._meta.fields]
-
+    	sol = [field.value_to_string(self) for field in Subweddit._meta.fields]
+    	#per = iter(sol)
+    	#answ = float(per)
+    	return sol
+    	#return self.name
 class Post(models.Model):
 	author = models.ForeignKey(LoggedInUser, on_delete=models.CASCADE, null=True)
 	body = models.TextField(null=True)
@@ -40,6 +43,9 @@ class Post(models.Model):
 
 	def __str__(self):
 		return 'Post {} by {}'.format(self.body, self.author)
+	
+	def __iter__(self):
+		return self.weddits
 
 class Comment(models.Model):
     body = models.TextField()

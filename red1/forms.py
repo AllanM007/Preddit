@@ -9,6 +9,10 @@ SUB_WEDDITS=(
     ('w/movies','w/movies'),
     )
 
+class UserModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.get_full_name()
+
 class PostForm(forms.ModelForm):
     weddits = forms.ModelMultipleChoiceField(queryset=Subweddit.objects.all())
     #weddits = forms.ChoiceField(choices=SUB_WEDDITS)
@@ -19,7 +23,8 @@ class PostForm(forms.ModelForm):
         fields = ['author', 'weddits', 'body']
         widgets = {
             'body': Textarea(attrs={'cols': 8, 'rows': 4}),
-            'weddits': Select(attrs={'class': 'form-control'})
+            #'weddits': Select(attrs={'class': 'form-control'})
+            'weddits': forms.Select()
         }
 
     field_order = ['weddits', 'body', 'author']
