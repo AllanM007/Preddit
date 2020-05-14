@@ -20,7 +20,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['author', 'weddits', 'body']
+        fields = ['weddits', 'body']
         widgets = {
             'body': Textarea(attrs={'cols': 8, 'rows': 4}),
             #'weddits': Select(attrs={'class': 'form-control'})
