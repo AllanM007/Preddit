@@ -1,33 +1,4 @@
 {% load static %}
-<!--DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-	<title>Home | Subweddits</title>
-</head>
-<body>
-	<div class="col-md-8 offset-md-2">
-    <h1>{{ Subweddit | title }}</h1>
-    <hr>
-    {% for post in posts %}
-        <h2><a href="">{% for weddits in post.weddits.all %}{{ weddits }}{% endfor %}</a></h2>
-        <small>
-            {{ post.created_on.date }} |&nbsp;
-            Categories:&nbsp;
-            {% for category in post.categories.all %}
-            <a href="{% url 'blog_category' category.name %}">
-                {{ category.name }}
-            </a>&nbsp;
-            {% endfor %}
-        </small>
-        <p>{{ post.body | slice:":400" }}...</p>
-    {% endfor %}
-    </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-</body>
-</html-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -45,6 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="{% static 'red1/preddit.js' %}"></script>
     
+  <link href="{% static 'red1/subweddit.css' %}" rel="stylesheet">
   <link href="{% static 'red1/feed.css' %}" rel="stylesheet">
   <script src="{% static 'red1/jquery.bullseye-1.0-min.js' %}"></script>
   <script src="{% static 'red1/main.js' %}"></script>
@@ -159,7 +131,7 @@
   <div class="col-md-3">
     <div class = "panel panel-danger panel-user">
     	<div class = "panel-heading">
-    		<h3 class = "panel-title">User Activity</h3>
+    		<h3 class = "panel-title">About Community</h3>
     	</div>
     	<div class = "panel-body">
     		{% for user in users %}
@@ -174,6 +146,28 @@
   </div>
 </div>
 </div>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Back to Top</button>
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
 <script src="{% static 'red1/notification.js' %}"></script>
 <script src="{% static 'red1/check_messages.js' %}"></script>
 </body>
