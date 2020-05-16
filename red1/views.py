@@ -85,3 +85,17 @@ def user_post(request):
             return JsonResponse({"error": form.errors}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
+
+@login_required(login_url='/login/')
+def weddit(request, pk):
+    
+    weddit = Subweddit.objects.get(pk=pk)
+
+    posts = Post.objects.all().order_by('-created_on')
+    
+    context = {
+        'weddit':weddit,
+        'posts':posts,
+    }
+
+    return render(request, 'red1/weddit.html', context)
