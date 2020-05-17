@@ -18,16 +18,15 @@ class LoggedInUser(models.Model):
 
 class Subweddit(models.Model):
     name = models.CharField( max_length=20, choices=WEDDIT_CHOICES)
+    created_on = models.DateTimeField(auto_now_add=True, null=True)
+    bio = models.TextField(null=True)
 
     def __str__(self):
     	return self.name
 
     def __iter__(self):
     	sol = [field.value_to_string(self) for field in Subweddit._meta.fields]
-    	#per = iter(sol)
-    	#answ = float(per)
     	return sol
-    	#return self.name
 class Post(models.Model):
 	author = models.ForeignKey(LoggedInUser, on_delete=models.CASCADE, null=True)
 	body = models.TextField(null=True)
