@@ -20,6 +20,7 @@ class Subweddit(models.Model):
     name = models.CharField( max_length=20, choices=WEDDIT_CHOICES)
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     bio = models.TextField(null=True)
+    guidelines = models.TextField(null=True)
 
     def __str__(self):
     	return self.name
