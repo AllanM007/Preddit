@@ -67,10 +67,10 @@
 			<img src="https://ucarecdn.com/4de11f90-ab77-40b3-b07f-6a020a601fd7/3298067.jpg" alt="weddit-image" style="width:110px;height:110px;" class="img-circle">
 		</div>
 		<h2 class="mb-4 text-white" style="color:#fff;">
-			Jumbotron with background image
+			{{ weddit.name }}
 		</h2>
 		<p class="mb-4 text-white" style="color:#fff;">
-			Hey, check this out.
+			Hey there, welcome 😃.
 		</p>
 		<a href="https://bootstrapious.com/snippets" class="btn btn-primary">Join</a>
 	</div>
@@ -78,7 +78,7 @@
 <div class="container">
 <div class="row">
   <div class="col-md-3">
-  	<div class = "panel panel-danger panel-user">
+  	<!--div class = "panel panel-danger panel-user">
     	<div class = "panel-heading">
     		<h3 class = "panel-title">User Activity</h3>
     	</div>
@@ -91,7 +91,7 @@
     		<br>
     		<a role="button" class="btn btn-danger" href="{% url 'red1:logout' %}">Log out</a>
     	</div>
-    </div>
+    </div-->
   </div>
   <div class="col-md-6">
     <div class="timeline-content">
@@ -148,11 +148,9 @@
     		<h3 class = "panel-title">About Community</h3>
     	</div>
     	<div class = "panel-body">
-    		{% for user in users %}
-    		<li data-username="{{ user.username|escape }}">
-    			{{ user.username|escape }}: {{ user.status|default:'Offline' }}
+    		<li>
+    			{{ weddit.bio }}
     		</li>
-    		{% endfor %}
     		<br>
     		<a role="button" class="btn btn-info" href="{% url 'red1:logout' %}">Log out</a>
     	</div>
@@ -164,11 +162,9 @@
     		<h3 class = "panel-title">Community Rules</h3>
     	</div>
     	<div class = "panel-body">
-    		{% for user in users %}
-    		<li data-username="{{ user.username|escape }}">
-    			{{ user.username|escape }}: {{ user.status|default:'Offline' }}
-    		</li>
-    		{% endfor %}
+    		<!--li-->
+    			{{ weddit.guidelines }}
+    		<!--/li-->
     		<br>
     	</div>
     </div>
