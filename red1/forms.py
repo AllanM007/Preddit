@@ -1,6 +1,6 @@
 from django.forms import ModelForm, Select, Textarea
 from django import forms
-from .models import LoggedInUser, Subweddit, Post, Comment
+from .models import LoggedInUser, Subweddit, Post, Comment, Follow
 
 SUB_WEDDITS=(
     ('w/tech','w/tech'),
@@ -35,3 +35,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['body']
+
+class FollowForm(forms.ModelForm):
+
+    class Meta:
+        exclude = set()
+        model = Follow
