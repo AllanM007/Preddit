@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^signup/$', sign_up, name='signup'),
     url(r'^$', user_list, name='user_list'),
     url(r'^post$', user_post, name='post'),
-    url(r'^subweddit/(?P<pk>\d+)/$', weddit, name='subweddit'),
+    url(r'^w/(?P<pk>\d+)/$', weddit, name='subweddit'),
 ]
