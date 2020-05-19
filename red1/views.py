@@ -109,15 +109,15 @@ class DiscoverView(TemplateView):
     def get_context_data(self):
         context = super(DiscoverView, self).get_context_data()
 
-        users = User.objects.all()
+        weddits = Subweddit.objects.all()
         following = []
-        for i in users:
+        for i in weddits:
             if len(i.followers.filter(user=self.request.user.id)) == 0:
                 following.append((i, False))
             else:
                 following.append((i, True))
 
-        context['users'] = users,
+        context['weddits'] = weddits,
         context['form'] = FollowForm()
         context['login_user'] = self.request.user
         context['following'] = following

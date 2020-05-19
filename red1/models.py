@@ -59,14 +59,14 @@ class Comment(models.Model):
     	return 'Comment {} for {}'.format(self.body, self.post)
 
 class Follow(models.Model):
-    user = models.ForeignKey(
-        'auth.User', related_name='friends', on_delete=models.CASCADE)
-    target = models.ForeignKey(
-        Subweddit, related_name='followers', on_delete=models.CASCADE)
+    user = models.ManyToManyField(
+        'auth.User', related_name='friends')
+    target = models.ManyToManyField(
+        'Subweddit', related_name='followers')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        unique_together = ('user', 'target')
+    #class Meta:
+        #unique_together = ('user', 'target')
     
     def __str__(self):
         return '{} is followed by {}'.format(self.target, self.user)
