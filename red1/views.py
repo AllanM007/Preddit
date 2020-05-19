@@ -1,11 +1,13 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic import DetailView, TemplateView
 from django.contrib.auth import get_user_model, login, logout
 from .models import Post, Comment, Subweddit, LoggedInUser, Follow
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.core import serializers
 from .forms import PostForm, CommentForm, FollowForm
 from django.http import JsonResponse
@@ -89,7 +91,7 @@ def user_post(request):
     return JsonResponse({"error": ""}, status=400)
 
 @login_required(login_url='/login/')
-def weddit(request, pk):
+def wedditxo(request, pk):
     
     weddit = Subweddit.objects.get(pk=pk)
 
@@ -101,16 +103,38 @@ def weddit(request, pk):
 
     return render(request, 'red1/weddit.html', context)
 
+class DiscoverView(TemplateView):
+    template_name = 'red1/weddit.html'
+
+    def get_context_data(self):
+        context = super(DiscoverView, self).get_context_data()
+
+        users = User.objects.all()
+        following = []
+        for i in users:
+            if len(i.followers.filter(user=self.request.user.id)) == 0:
+                following.append((i, False))
+            else:
+                following.append((i, True))
+
+        context['users'] = users,
+        context['form'] = FollowForm()
+        context['login_user'] = self.request.user
+        context['following'] = following
+
+        return context
+
 class FollowView(CreateView):
     form_class = FollowForm
     model = Follow
-    success_url = reverse_lazy('timeline_feed')
+    success_url = reverse_lazy('home')
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(FollowView, self).form_valid(form)
+
 class UnfollowView(DeleteView):
     model = Follow
-    success_url = reverse_lazy('timeline_feed')
+    success_url = reverse_lazy('home')
     def get_object(self):
         target_id = self.kwargs['target_id']
         return self.get_queryset().get(target__id=target_id)

@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from red1.views import user_list, log_in, log_out, sign_up, user_post, weddit
+from red1.views import user_list, log_in, log_out, sign_up, user_post, wedditxo, DiscoverView
 
 
 urlpatterns = [
@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^signup/$', sign_up, name='signup'),
     url(r'^$', user_list, name='user_list'),
     url(r'^post$', user_post, name='post'),
-    url(r'^w/(?P<pk>\d+)/$', weddit, name='subweddit'),
+    url(r'^w/(?P<pk>\d+)/$', wedditxo, name='subweddit'),
+    url(r'^discover/$', DiscoverView.as_view(), name='discover'),
 ]
