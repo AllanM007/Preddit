@@ -65,7 +65,8 @@ class Follow(models.Model):
         'Subweddit', related_name='followers')
     created_at = models.DateTimeField(auto_now_add=True)
 
-    #class Meta:
+    class Meta:
+    	pass
         #unique_together = ('user', 'target')
     
     def __str__(self):
