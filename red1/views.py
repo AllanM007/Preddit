@@ -91,7 +91,7 @@ def user_post(request):
     return JsonResponse({"error": ""}, status=400)
 
 @login_required(login_url='/login/')
-def wedditxo(request, pk):
+def weddit(request, pk):
     
     weddit = Subweddit.objects.get(pk=pk)
 
@@ -104,9 +104,12 @@ def wedditxo(request, pk):
     return render(request, 'red1/weddit.html', context)
 
 class DiscoverView(TemplateView):
-    template_name = 'red1/weddit.html'
+    model = Post
+
+    template_name = 'red1/weddit2.html'
 
     def get_context_data(self):
+        
         context = super(DiscoverView, self).get_context_data()
 
         weddits = Subweddit.objects.all()
@@ -118,6 +121,7 @@ class DiscoverView(TemplateView):
                 following.append((i, True))
 
         context['weddits'] = weddits,
+        context['post_detail'] = Post.objects.all().order_by('-created_on')
         context['form'] = FollowForm()
         context['login_user'] = self.request.user
         context['following'] = following

@@ -84,7 +84,7 @@
     <div class="timeline-content">
       <div class="row">
         <div class="col-xs-12">
-        	{% for post in posts %}
+        	{% for post in post_detail %}
         	<div class = "panel panel-default panel-user">
         		<div class = "panel-heading">
         			<h3 class = "panel-title">Weddits</h3>
@@ -180,25 +180,25 @@ function topFunction() {
   document.documentElement.scrollTop = 0;
 }
 </script>
-<!--div class="container">
+<div class="container">
   <div class="row">
     {% for one, followed in following %}
     <div class="col-md-3 col-sm-6 col-xs-12">
       <div class="user">
-      <div class="follow-button">
-       <form action="{% if followed %}{% url 'unfollow' one.id %}{% else %}{% url 'red1:follow' %}{% endif %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" id="id_target" name="target" value="{{one.id}}">
-        <input type="hidden" id="id_user" name="user" value="{{user.id}}">
-        <button type="submit" class="btn btn-primary" value="Create" />
-        {% if followed %}
-          Unfollow
-        {% else %}
-          Follow
-        {% endif %}
-        </button> 
-      </form>
-      </div>
+        <div class="follow-button">
+          <form action="{% if followed %}{% url 'red1:unfollow' one.id %}{% else %}{% url 'red1:follow' %}{% endif %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="id_target" name="target" value="{{one.id}}">
+            <input type="hidden" id="id_user" name="user" value="{{user.id}}">
+            <button type="submit" class="btn btn-primary" value="Create" />
+            {% if followed %}
+            Unfollow
+            {% else %}
+            Follow
+            {% endif %}
+            </button> 
+          </form>
+        </div>
       </div>
     </div>
     {% if forloop.counter|divisibleby:'4' %}
@@ -206,13 +206,14 @@ function topFunction() {
     {% elif forloop.counter|divisibleby:'2' %}
     <div class="clearfix visible-sm-block"></div>
     {% endif %}
-  {% endfor %}
+    {% endfor %}
   </div>
   <div class="row">
     <div class="">
+      
+    </div>
+  </div>
 </div>
-</div>
-</div-->
 <script src="{% static 'red1/notification.js' %}"></script>
 <script src="{% static 'red1/check_messages.js' %}"></script>
 </body>
