@@ -131,14 +131,14 @@ class DiscoverView(TemplateView):
 class FollowView(CreateView):
     form_class = FollowForm
     model = Follow
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('red1:user_list')
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.user = self.request.user
         return super(FollowView, self).form_valid(form)
 
 class UnfollowView(DeleteView):
     model = Follow
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('red1:user_list')
     def get_object(self):
         target_id = self.kwargs['target_id']
         return self.get_queryset().get(target__id=target_id)
