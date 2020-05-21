@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^$', user_list, name='user_list'),
     url(r'^post$', user_post, name='post'),
     url(r'^w/(?P<pk>\d+)/$', weddit, name='subweddit'),
-    url(r'^discover/$', DiscoverView.as_view(), name='discover'),
+    url(r'^discover/(?P<pk>\d+)/$', DiscoverView.as_view(), name='discover'),
     url(r'^follow/$', FollowView.as_view(), name='follow'),
     url(r'^unfollow/(?P<target_id>\d+)/$', UnfollowView.as_view(),name='unfollow'),
 ]

@@ -6,7 +6,8 @@ from .models import Post, Comment, Subweddit, LoggedInUser, Follow
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
 from django.contrib.auth.models import User
 from django.core import serializers
 from .forms import PostForm, CommentForm, FollowForm
@@ -108,11 +109,15 @@ class DiscoverView(TemplateView):
 
     template_name = 'red1/weddit2.html'
 
-    def get_context_data(self):
+    def get_context_data(self, pk, *args, **kwargs):
         
         context = super(DiscoverView, self).get_context_data()
 
-        weddits = Subweddit.objects.all()
+        weddits = Subweddit.objects.filter(pk=pk)
+        #self.object = self.get_object()
+        self.kwargs['pk']
+        #weddits = get_object_or_404(Subweddit, kwargs={'pk': self.object.pk})
+
         following = []
         for i in weddits:
             if len(i.followers.filter(user=self.request.user.id)) == 0:
@@ -121,7 +126,7 @@ class DiscoverView(TemplateView):
                 following.append((i, True))
 
         context['weddits'] = weddits,
-        context['post_detail'] = Post.objects.all().order_by('-created_on')
+        context['post_detail'] = Post.objects.filter(weddits=pk).order_by('-created_on')
         context['form'] = FollowForm()
         context['login_user'] = self.request.user
         context['following'] = following
@@ -131,14 +136,14 @@ class DiscoverView(TemplateView):
 class FollowView(CreateView):
     form_class = FollowForm
     model = Follow
-    success_url = reverse_lazy('red1:user_list')
+    success_url = reverse_lazy('red1:discover')
     def form_valid(self, form):
         form.user = self.request.user
         return super(FollowView, self).form_valid(form)
 
 class UnfollowView(DeleteView):
     model = Follow
-    success_url = reverse_lazy('red1:user_list')
+    success_url = reverse_lazy('red1:discover')
     def get_object(self):
         target_id = self.kwargs['target_id']
         return self.get_queryset().get(target__id=target_id)
