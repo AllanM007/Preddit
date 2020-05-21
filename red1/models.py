@@ -28,6 +28,7 @@ class Subweddit(models.Model):
     def __iter__(self):
     	sol = [field.value_to_string(self) for field in Subweddit._meta.fields]
     	return sol
+    	
 class Post(models.Model):
 	author = models.ForeignKey(LoggedInUser, on_delete=models.CASCADE, null=True)
 	body = models.TextField(null=True)

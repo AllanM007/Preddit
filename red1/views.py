@@ -105,7 +105,6 @@ def weddit(request, pk):
     return render(request, 'red1/weddit.html', context)
 
 class DiscoverView(TemplateView):
-    model = Post
 
     template_name = 'red1/weddit2.html'
 
@@ -114,9 +113,8 @@ class DiscoverView(TemplateView):
         context = super(DiscoverView, self).get_context_data()
 
         weddits = Subweddit.objects.filter(pk=pk)
-        #self.object = self.get_object()
+
         self.kwargs['pk']
-        #weddits = get_object_or_404(Subweddit, kwargs={'pk': self.object.pk})
 
         following = []
         for i in weddits:
@@ -125,7 +123,7 @@ class DiscoverView(TemplateView):
             else:
                 following.append((i, True))
 
-        context['weddits'] = weddits,
+        context['subweddits'] = Subweddit.objects.filter(pk=pk)
         context['post_detail'] = Post.objects.filter(weddits=pk).order_by('-created_on')
         context['form'] = FollowForm()
         context['login_user'] = self.request.user
@@ -136,14 +134,14 @@ class DiscoverView(TemplateView):
 class FollowView(CreateView):
     form_class = FollowForm
     model = Follow
-    success_url = reverse_lazy('red1:discover')
+    success_url = reverse_lazy('red1:user_list')
     def form_valid(self, form):
         form.user = self.request.user
         return super(FollowView, self).form_valid(form)
 
 class UnfollowView(DeleteView):
     model = Follow
-    success_url = reverse_lazy('red1:discover')
+    success_url = reverse_lazy('red1:user_list')
     def get_object(self):
         target_id = self.kwargs['target_id']
         return self.get_queryset().get(target__id=target_id)

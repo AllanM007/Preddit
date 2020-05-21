@@ -12,7 +12,7 @@
   z-index: 99; /* Make sure it does not overlap */
   border: none; /* Remove borders */
   outline: none; /* Remove outline */
-  background-color: cyan; /* Set a background color */
+  background-color: #0000FF; /* Set a background color */
   color: white; /* Text color */
   cursor: pointer; /* Add a mouse pointer on hover */
   padding: 5px; /* Some padding */

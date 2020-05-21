@@ -67,13 +67,39 @@
 			<img src="https://ucarecdn.com/4de11f90-ab77-40b3-b07f-6a020a601fd7/3298067.jpg" alt="weddit-image" style="width:110px;height:110px;" class="img-circle">
 		</div>
 		<h2 class="mb-4 text-white" style="color:#fff;">
-			{{ weddit.name }}
+      {% for weddit in subweddits %}
+      {{ weddit.name }}
+      {% endfor %}
 		</h2>
 		<p class="mb-4 text-white" style="color:#fff;">
 			Hey there, welcome 😃.
 		</p>
-		<a href="https://bootstrapious.com/snippets" class="btn btn-primary">Join</a>
-	</div>
+		<!--a href="https://bootstrapious.com/snippets" class="btn btn-primary">Join</a-->
+    {% for one, followed in following %}
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <div class="user">
+        <div class="follow-button">
+          <form action="{% if followed %}{% url 'red1:unfollow' one.id %}{% else %}{% url 'red1:follow' %}{% endif %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="id_target" name="target" value="{{one.id}}">
+            <input type="hidden" id="id_user" name="user" value="{{user.id}}">
+            <button type="submit" class="btn btn-primary" value="Create" />
+            {% if followed %}
+            Unfollow
+            {% else %}
+            Follow
+            {% endif %}
+            </button> 
+          </form>
+        </div>
+      </div>
+    </div>
+    {% if forloop.counter|divisibleby:'4' %}
+    <div class="clearfix visible-sm-block visible-md-block visible-lg-block"></div>
+    {% elif forloop.counter|divisibleby:'2' %}
+    <div class="clearfix visible-sm-block"></div>
+    {% endif %}
+    {% endfor %}
 </div>
 <div class="container">
 <div class="row">
@@ -136,7 +162,9 @@
     	</div>
     	<div class = "panel-body">
     		<li>
-    			{{ weddit.bio }}
+          {% for weddit in subweddits %}
+          {{ weddit.bio }}
+          {% endfor %}
     		</li>
     		<br>
     		<a role="button" class="btn btn-info" href="{% url 'red1:logout' %}">Log out</a>
@@ -150,7 +178,9 @@
     	</div>
     	<div class = "panel-body">
     		<!--li-->
-    			{{ weddit.guidelines }}
+          {% for weddit in subweddits %}
+          {{ weddit.guidelines }}
+          {% endfor %}
     		<!--/li-->
     		<br>
     	</div>
@@ -180,7 +210,7 @@ function topFunction() {
   document.documentElement.scrollTop = 0;
 }
 </script>
-<div class="container">
+<!--div class="container">
   <div class="row">
     {% for one, followed in following %}
     <div class="col-md-3 col-sm-6 col-xs-12">
@@ -213,7 +243,7 @@ function topFunction() {
       
     </div>
   </div>
-</div>
+</div-->
 <script src="{% static 'red1/notification.js' %}"></script>
 <script src="{% static 'red1/check_messages.js' %}"></script>
 </body>
