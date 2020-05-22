@@ -30,7 +30,8 @@ class Subweddit(models.Model):
     	return sol
     	
 class Post(models.Model):
-	author = models.ForeignKey(LoggedInUser, on_delete=models.CASCADE, null=True)
+	#author = models.ForeignKey(LoggedInUser, on_delete=models.CASCADE, null=True)
+	author = models.CharField(max_length=20, null=True)
 	body = models.TextField(null=True)
 	created_on = models.DateTimeField(auto_now_add=True)
 	last_modified = models.DateTimeField(auto_now=True)
