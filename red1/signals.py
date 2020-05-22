@@ -12,8 +12,3 @@ def on_user_login(sender, **kwargs):
 @receiver(user_logged_out)
 def on_user_logout(sender, **kwargs):
     LoggedInUser.objects.filter(user=kwargs.get('user')).delete()
-
-
-#@receiver(post_save, sender=Post)
-#def save_post(sender, instance, **kwargs):
-    #instance.save()
