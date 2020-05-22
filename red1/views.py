@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect, get_object_or_404
-
 from django.contrib.auth.models import User
 from django.core import serializers
 from .forms import PostForm, CommentForm, FollowForm
@@ -91,22 +90,9 @@ def user_post(request):
 
     return JsonResponse({"error": ""}, status=400)
 
-@login_required(login_url='/login/')
-def weddit(request, pk):
-    
-    weddit = Subweddit.objects.get(pk=pk)
-
-    posts = Post.objects.filter(weddits = pk).order_by('-created_on')
-    context = {
-        'weddit':weddit,
-        'posts':posts,
-    }
-
-    return render(request, 'red1/weddit.html', context)
-
 class DiscoverView(TemplateView):
 
-    template_name = 'red1/weddit2.html'
+    template_name = 'red1/weddit.html'
 
     def get_context_data(self, pk, *args, **kwargs):
         
@@ -123,8 +109,8 @@ class DiscoverView(TemplateView):
             else:
                 following.append((i, True))
 
-        context['subweddits'] = Subweddit.objects.filter(pk=pk)
-        context['post_detail'] = Post.objects.filter(weddits=pk).order_by('-created_on')
+        context['subweddits'] = Subweddit.objects.filter(pk = pk)
+        context['post_detail'] = Post.objects.filter(weddits = pk).order_by('-created_on')
         context['form'] = FollowForm()
         context['login_user'] = self.request.user
         context['following'] = following
