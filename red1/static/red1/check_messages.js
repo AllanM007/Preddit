@@ -1,7 +1,7 @@
 $(function () {
   function check_messages() {
     $.ajax({
-      url: '/messages/check/',
+      url: '/',
       cache: false,
       success: function (data) {
         $("#unread-count").text(data);

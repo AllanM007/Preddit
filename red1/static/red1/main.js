@@ -47,8 +47,8 @@ $(function () {
     }
     $("#compose-form input[name='last_feed']").val(last_feed);
     $.ajax({
-      //url: '/feeds/post/',
-      url: 'red1:user_list',
+      url: '/',
+      //url: 'red1:user_list',
       data: $("#compose-form").serialize(),
       type: 'post',
       cache: false,
@@ -66,8 +66,7 @@ $(function () {
     var feed = $(li).attr("feed-id");
     var csrf = $(li).attr("csrf");
     $.ajax({
-      //url: '/feeds/like/',
-      url: '/users/',
+      url: '/',
       data: {
         'feed': feed,
         'csrfmiddlewaretoken': csrf
@@ -101,8 +100,7 @@ $(function () {
       $(".comments input[name='post']", post).focus();
       var feed = $(post).closest("li").attr("feed-id");
       $.ajax({
-        //url: '/feeds/comment/',
-        url: '/users/',
+        url: '/',
         data: { 'feed': feed },
         cache: false,
         beforeSend: function () {
@@ -124,8 +122,7 @@ $(function () {
       var container = $(this).closest(".comments");
       var input = $(this);
       $.ajax({
-        //url: '/feeds/comment/',
-        url: '/users/',
+        url: '/',
         data: $(form).serialize(),
         type: 'post',
         cache: false,
@@ -148,8 +145,7 @@ $(function () {
       var next_page = parseInt($("#load_feed input[name='page']").val()) + 1;
       $("#load_feed input[name='page']").val(next_page);
       $.ajax({
-        //url: '/feeds/load/',
-        url: '/users/',
+        url: '/',
         data: $("#load_feed").serialize(),
         cache: false,
         beforeSend: function () {
@@ -177,8 +173,7 @@ $(function () {
     var feed_source = $("#feed_source").val();
     if (last_feed != undefined) {
       $.ajax({
-        //url: '/feeds/check/',
-        url: '/users/',
+        url: '/',
         data: {
           'last_feed': last_feed,
           'feed_source': feed_source
@@ -206,8 +201,7 @@ $(function () {
     var last_feed = $(".stream li:first-child").attr("feed-id");
     var feed_source = $("#feed_source").val();
     $.ajax({
-      //url: '/feeds/load_new/',
-      url: '/users/',
+      url: '/',
       data: { 
         'last_feed': last_feed,
         'feed_source': feed_source
@@ -232,8 +226,7 @@ $(function () {
 
     if (first_feed != undefined && last_feed != undefined) {
       $.ajax({
-        //url: '/feeds/update/',
-        url: '/users/',
+        url: '/',
         data: {
           'first_feed': first_feed,
           'last_feed': last_feed,
@@ -263,8 +256,7 @@ $(function () {
       var container = $(this);
       var feed = $(this).closest("li").attr("feed-id");
       $.ajax({
-        //url: '/feeds/track_comments/',
-        url: '/users/',
+        url: '/',
         data: {'feed': feed},
         cache: false,
         success: function (data) {
@@ -285,8 +277,7 @@ $(function () {
     var feed = $(li).attr("feed-id");
     var csrf = $(li).attr("csrf");
     $.ajax({
-      //url: '/feeds/remove/',
-      url: '/users/',
+      url: '/',
       data: {
         'feed': feed,
         'csrfmiddlewaretoken': csrf
