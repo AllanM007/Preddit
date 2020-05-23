@@ -18,6 +18,7 @@
     <script src="{% static 'red1/preddit.js' %}"></script>
     
   <link href="{% static 'red1/feed.css' %}" rel="stylesheet">
+  <link href="{% static 'red1/subweddit.css' %}" rel="stylesheet">
   <script src="{% static 'red1/jquery.bullseye-1.0-min.js' %}"></script>
   <script src="{% static 'red1/main.js' %}"></script>
 
@@ -198,6 +199,28 @@
 	</div>
 </main>
 <br>
+<button onclick="topFunction()" id="myBtn" title="Go to top">Back to Top</button>
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
 	$("#post-form").submit(function (e) {
