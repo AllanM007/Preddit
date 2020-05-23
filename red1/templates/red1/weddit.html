@@ -37,14 +37,9 @@
           </div>
           <div class="collapse navbar-collapse" id="menu">
           	<ul class="nav navbar-nav">
-          		<li>
-          			<a href="#" id="notifications" data-container="body" data-toggle="popover" data-placement="bottom" title="Notifications">
-          				<span class="glyphicon glyphicon-fire"></span>
-          			</a>
-          		</li>
-          		<li><a href="#">Feed</a></li>
-                <li><a href="#">Subweddits</a></li>
-                <li><a href="#">Inbox</a></li>
+              <li><a href="#">Feed</a></li>
+              <li><a href="#">Subweddits</a></li>
+              <li><a href="#">Inbox</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -53,7 +48,7 @@
                     <li><a href="#">My Profile</a></li>
                     <li><a href="#">Account Settings</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Log out</a></li>
+                    <li><a href="{% url 'red1:logout' %}">Log out</a></li>
                   </ul>
                 </li>
             </ul>
