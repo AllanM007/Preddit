@@ -1,15 +1,23 @@
-language: python # => 1
-    python: # => 2
-      - "3.7.3"
-    addons:
-      postgresql:"9.5.1"
-    services: # => 3
-      - redis-server
-    env: # => 4
-      -DJANGO=1.10.5
-    install: # => 5
-      - pip install -r requirements.txt
-    before_script:
-      - sudo redis-server /etc/redis/redis.conf --port 6379 --requirepass 'secret'
-    script: # => 7
-      - python manage.py test
+language: python
+
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"      # current default Python on Travis CI
+  - "3.7"
+  - "3.8"
+  - "3.8-dev"  # 3.8 development branch
+  - "nightly"  # nightly build
+env:
+  - DJANGO_VERSION=1.10.5
+virtualenv:
+  system_site_packages: true
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install -q Django==$DJANGO_VERSION
+  - python setup.py -q install
+# command to run tests
+script:
+  - python manage.py test
