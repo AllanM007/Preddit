@@ -53,11 +53,14 @@ def user_list(request):
 
     posts = Post.objects.all().order_by('-created_on')
     
+    subweddits = Subweddit.objects.all()
+
     form =  PostForm
 
     context = {
         'users':users,
         'form':form,
+        'subweddits':subweddits,
         'posts':posts,
     }
 
@@ -94,13 +97,13 @@ class DiscoverView(TemplateView):
 
     template_name = 'red1/weddit.html'
 
-    def get_context_data(self, pk, *args, **kwargs):
+    def get_context_data(self, slug, *args, **kwargs):
         
         context = super(DiscoverView, self).get_context_data()
 
-        weddits = Subweddit.objects.filter(pk=pk)
+        weddits = Subweddit.objects.filter(slug=slug)
 
-        self.kwargs['pk']
+        self.kwargs['slug']
 
         following = []
         for i in weddits:
@@ -109,8 +112,8 @@ class DiscoverView(TemplateView):
             else:
                 following.append((i, True))
 
-        context['subweddits'] = Subweddit.objects.filter(pk = pk)
-        context['post_detail'] = Post.objects.filter(weddits = pk).order_by('-created_on')
+        context['subweddits'] = Subweddit.objects.filter(slug = slug)
+        context['post_detail'] = Post.objects.filter(weddits__slug = slug).order_by('-created_on')
         context['form'] = FollowForm()
         context['login_user'] = self.request.user
         context['following'] = following

@@ -7,6 +7,7 @@ WEDDIT_CHOICES = (
         ('w/cars', 'w/cars'),
         ('w/memes', 'w/memes'),
         ('w/movies', 'w/movies'),
+        ('w/facts', 'w/facts'),
     )
 
 class LoggedInUser(models.Model):
@@ -21,9 +22,19 @@ class Subweddit(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     bio = models.TextField(null=True)
     guidelines = models.TextField(null=True)
+    slug = models.SlugField(null=True, blank=True, unique=True)
 
     def __str__(self):
     	return self.name
+
+    def get_absolute_url(self):
+        return reverse('subweddit_detail', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if self.slug is None:
+            self.slug = slugify(self.name)
+
+        return super().save(*args, **kwargs)
 
     def __iter__(self):
     	sol = [field.value_to_string(self) for field in Subweddit._meta.fields]

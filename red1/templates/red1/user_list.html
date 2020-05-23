@@ -89,10 +89,9 @@
 						<h3 class = "panel-title">Subweddits</h3>
 					</div>
 					<div class = "panel-body">
-						<li><a href="">w/tech</a></li>
-						<li><a href="">w/memes</a></li>
-						<li><a href="">w/cars</a></li>
-						<li><a href="">w/movies</a></li>
+						{% for weddit in subweddits %}
+						<li><a href="{% url 'red1:w' slug=weddit.slug %}">{{ weddit.name }}</a></li>
+						{% endfor %}
 					</div>
 				</div>
 			</div>

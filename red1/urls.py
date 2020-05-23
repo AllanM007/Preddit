@@ -8,7 +8,8 @@ urlpatterns = [
     url(r'^signup/$', sign_up, name='signup'),
     url(r'^$', user_list, name='user_list'),
     url(r'^post$', user_post, name='post'),
-    url(r'^discover/(?P<pk>\d+)/$', DiscoverView.as_view(), name='discover'),
+    #url(r'^discover/(?P<pk>\d+)/$', DiscoverView.as_view(), name='discover'),
+    url(r'^w/(?P<slug>\w+)/$', DiscoverView.as_view(), name='w'),
     url(r'^follow/$', FollowView.as_view(), name='follow'),
     url(r'^unfollow/(?P<target_id>\d+)/$', UnfollowView.as_view(),name='unfollow'),
 ]
