@@ -7,7 +7,7 @@ python:
 # command to specify linux distro build should run on
 dist: bionic
 
-# command to test framework environment
+# command to setting framework environment variables
 env:
   - DJANGO_VERSION=1.10.5
 

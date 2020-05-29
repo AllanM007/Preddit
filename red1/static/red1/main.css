@@ -75,3 +75,19 @@ main .container {
   margin-bottom: .8em;
 }
 
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  --background-color: #222;
+}
+
+@media (prefers-color-scheme: light) {
+  --background-color: #fafafa;
+}
+
+body {
+  background-color: var(--background-color);
+}

@@ -32,6 +32,10 @@ def log_out(request):
     logout(request)
     return redirect(reverse('red1:login'))
 
+
+def dark(request):
+    return render(request, 'red1/dark.html')
+
 def sign_up(request):
     form = UserCreationForm()
     if request.method == 'POST':

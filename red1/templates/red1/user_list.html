@@ -23,8 +23,110 @@
   <script src="{% static 'red1/main.js' %}"></script>
 
   </head>
+  <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Lato:400,400italic,700|Sansita+One);
+  
+ :root {
+    --primary-color: #302AE6;
+    --secondary-color: #536390;
+    --font-color: #424242;
+    --bg-color: #fff;
+    --heading-color: #292922;
+}
+
+[data-theme="dark"] {
+    --primary-color: #9A97F3;
+    --secondary-color: #818cab;
+    --font-color: #e1e1ff;
+    --bg-color: #161625;
+    --heading-color: #818cab;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  color: var(--secondary-color);
+}
+
+.container {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	color: var(--secondary-color);
+}
+
+.head {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	color: var(--secondary-color);
+}
+
+.panel {
+	background-color: var(--bg-color);
+	color: var(--font-color);
+	color: var(--secondary-color);
+}
+
+/*slider switch css */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  
+  em {
+    margin-left: 10px;
+    font-size: 1rem;
+  }
+}
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.theme-switch input {
+  display:none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 26px;
+}
+
+input:checked + .slider {
+  background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    </style>
   <body style="padding-top: 0">
-  	<header>
+  	<header class="head">
         <nav class="navbar navbar-default" role="navigation" style="">
           <div class="container">
             <div class="navbar-header">
@@ -72,6 +174,14 @@
                   </ul>
                 </li>
             </ul>
+            <nav>
+  <div class="theme-switch-wrapper">
+       <label class="theme-switch" for="checkbox">
+    <input type="checkbox" id="checkbox" />
+    <div class="slider round"></div>
+  </label>
+    <em>Enable Dark Mode!</em>
+  </div>
           </div>
         </div>
       </nav>
@@ -310,6 +420,31 @@ function topFunction() {
     if (socket.readyState == WebSocket.OPEN) {
       socket.onopen();
     }
+</script>
+<script type="text/javascript">
+	const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+	const currentTheme = localStorage.getItem('theme');
+
+	if (currentTheme) {
+		document.documentElement.setAttribute('data-theme', currentTheme);
+
+	if (currentTheme === 'dark') {
+		toggleSwitch.checked = true;
+	}
+}
+
+function switchTheme(e) {
+	if (e.target.checked) {
+		document.documentElement.setAttribute('data-theme', 'dark');
+		localStorage.setItem('theme', 'dark');
+	}
+    else {
+    	document.documentElement.setAttribute('data-theme', 'light');
+    	localStorage.setItem('theme', 'light');
+    }    
+}
+
+toggleSwitch.addEventListener('change', switchTheme, false);
 </script>
 <script src="{% static 'red1/notification.js' %}"></script>
 <script src="{% static 'red1/check_messages.js' %}"></script>
